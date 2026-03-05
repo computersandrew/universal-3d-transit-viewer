@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>SEPTA Train Viewer</title>
+<style>
+body { font-family: Arial; background:#111; color:white; }
+pre { background:#222; padding:10px; }
+</style>
+</head>
+<body>
+
+<h1>SEPTA Train Viewer</h1>
+<button onclick="load()">Load Trains</button>
+
+<pre id="data"></pre>
+
+<script>
+async function load() {
+  const r = await fetch("/api/septa/trainview");
+  const data = await r.json();
+  document.getElementById("data").textContent =
+    JSON.stringify(data.slice(0,5), null, 2);
+}
+</script>
+
+</body>
+</html>

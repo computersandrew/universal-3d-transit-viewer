@@ -1,27 +1,47 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
 <head>
-<title>SEPTA Train Viewer</title>
-<style>
-body { font-family: Arial; background:#111; color:white; }
-pre { background:#222; padding:10px; }
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SEPTA 3D Transit Viewer</title>
+
+  <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet">
+  <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+
+  <style>
+    html, body { margin:0; height:100%; background:#000; }
+    #map { height:100%; width:100%; }
+    .hud{
+      position:absolute; z-index:10; top:10px; left:10px;
+      background:rgba(0,0,0,.65); color:#fff;
+      padding:10px 12px; border-radius:12px;
+      font: 12px/1.35 system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      width: 340px;
+    }
+    .hud input{ width:100%; padding:8px; border-radius:8px; border:1px solid rgba(255,255,255,.2); background:rgba(255,255,255,.08); color:#fff; }
+    .hud button{ margin-top:8px; width:100%; padding:8px; border-radius:8px; border:0; background:#2b74ff; color:#fff; font-weight:700; cursor:pointer; }
+    .tiny{ opacity:.85; margin-top:8px; }
+    .train {
+      width: 24px; height: 10px;
+      border-radius: 7px;
+      border: 1px solid rgba(255,255,255,.7);
+      box-shadow: 0 8px 18px rgba(0,0,0,.35);
+      background: linear-gradient(180deg, rgba(255,255,255,.95), rgba(140,200,255,.85));
+      transform-origin: center;
+    }
+  </style>
 </head>
 <body>
+  <div id="map"></div>
 
-<h1>SEPTA Train Viewer</h1>
-<button onclick="load()">Load Trains</button>
+  <div class="hud">
+    <div style="font-weight:800; font-size:13px;">SEPTA Regional Rail — 3D Viewer</div>
+    <div class="tiny">Paste your Mapbox token to load the 3D satellite map.</div>
+    <div style="margin-top:8px;"><input id="token" placeholder="Mapbox token (pk...)" /></div>
+    <button id="startBtn">Start viewer</button>
+    <div class="tiny" id="status">Waiting for token…</div>
+  </div>
 
-<pre id="data"></pre>
-
-<script>
-async function load() {
-  const r = await fetch("/api/septa/trainview");
-  const data = await r.json();
-  document.getElementById("data").textContent =
-    JSON.stringify(data.slice(0,5), null, 2);
-}
-</script>
-
+  <script type="module" src="./app.js"></script>
 </body>
 </html>
